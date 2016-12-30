@@ -1,34 +1,25 @@
-
 # coding: utf-8
 
-# In[ ]:
-
 class LFUCache(object):
-    
-    
+       
     def __init__(self, capacity):
         self.capacity = capacity
         self.bykey = {}
         self.freq_head = New_freq_node()
-        
-        
-    def set(self, key, value):
-        
+               
+    def set(self, key, value):      
         if self.capacity == 0:
             return
         
         if key not in self.bykey:
             if len(self.bykey) >= self.capacity:
                 self.delete_LFU_item()
-                
+            
             freq = self.freq_head.next
             if freq.value != 1:
                 freq = self.get_new_node(1, self.freq_head, freq)
             freq.items.append(key)
-            self.bykey[key] = New_LFU_item(value, freq)
-            
-            
-        
+            self.bykey[key] = New_LFU_item(value, freq)     
         else:
             tmp = self.bykey[key]
             freq = tmp.parent
@@ -44,10 +35,8 @@ class LFUCache(object):
             freq.items.remove(key)
             if len(freq.items) == 0:
                 self.delete_node(freq)
-            
-    
-    def get(self, key):
-        
+           
+    def get(self, key):    
         if key not in self.bykey:
             return -1
         tmp = self.bykey[key]
@@ -76,8 +65,6 @@ class LFUCache(object):
     def delete_node(self, node):
         node.prev.next = node.next
         node.next.prev = node.prev
-        
-
         
     def delete_LFU_item(self):
         if len(self.bykey) == 0:
